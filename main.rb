@@ -2,6 +2,9 @@
 
 require 'telegram/bot'
 require 'base64'
+require 'dotenv'
+
+Dotenv.load('.env')
 
 token = ENV['BOT_TOKEN']
 available_chat_ids = ENV['AVAILABLE_CHAT_IDS'].split(',')
