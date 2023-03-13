@@ -20,7 +20,7 @@ end
 class Logger
   def self.log(message)
     time = Time.new.strftime('%d/%m/%y %H:%M:%S')
-    timed_message = "#{time} -> #{message}"
+    timed_message = "#{time} -> #{message}\n"
 
     puts timed_message
     File.write("logs.txt", timed_message, mode: "a")
