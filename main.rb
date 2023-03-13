@@ -23,7 +23,7 @@ class Logger
     timed_message = "#{time} -> #{message}"
 
     puts timed_message
-    File.write("logs.txt", message, mode: "a")
+    File.write("logs.txt", timed_message, mode: "a")
   end
 end
 
