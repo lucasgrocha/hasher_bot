@@ -23,7 +23,7 @@ class Logger
     timed_message = "#{time} -> #{message}"
 
     puts timed_message
-    `echo #{timed_message} >> logs.txt`
+    File.write("logs.txt", message, mode: "a")
   end
 end
 
