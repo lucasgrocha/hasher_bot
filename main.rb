@@ -23,7 +23,7 @@ class Logger
     timed_message = "#{time} -> #{message}\n"
 
     puts timed_message
-    File.write("logs.txt", timed_message, mode: "a")
+    File.write('logs.txt', timed_message, mode: 'a')
   end
 end
 
@@ -56,6 +56,12 @@ Telegram::Bot::Client.run(token) do |bot|
           bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
           sleep(5)
           bot.api.delete_message(chat_id: message.chat.id, message_id: sent_message_id)
+        end
+      when '/ping'
+        Logger.log('Ping')
+
+        Thread.new do
+          bot.api.send_message(chat_id: message.chat.id, text: 'Pong')
         end
       when '/logs'
         Logger.log('Logging the file')
