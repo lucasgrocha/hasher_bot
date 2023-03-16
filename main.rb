@@ -41,8 +41,8 @@ Telegram::Bot::Client.run(token) do |bot|
 
         Logger.log("Encoding: #{arg}")
 
-        bot.api.send_message(chat_id: message.chat.id, text: encoded64)
         bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
+        bot.api.send_message(chat_id: message.chat.id, text: encoded64)
       when '/decode64'
         decoded = decode64(arg)
 
@@ -54,7 +54,7 @@ Telegram::Bot::Client.run(token) do |bot|
           sent_chat_id = sent_message['result']['from']['id']
 
           bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
-          sleep(5)
+          sleep(1.5)
           bot.api.delete_message(chat_id: message.chat.id, message_id: sent_message_id)
         end
       when '/ping'
