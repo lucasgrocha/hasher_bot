@@ -34,6 +34,7 @@ Telegram::Bot::Client.run(token) do |bot|
     logged = available_chat_ids.map(&:to_i).include?(message.chat.id)
     if logged
       command, arg = message.text.split(' ', 2)
+      arg = arg.gsub("\n", '')
 
       case command
       when '/encode64'
@@ -49,12 +50,24 @@ Telegram::Bot::Client.run(token) do |bot|
         Logger.log("Decoding: #{arg}")
 
         Thread.new do
+          bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
           sent_message = bot.api.send_message(chat_id: message.chat.id, text: decoded.to_s)
           sent_message_id = sent_message['result']['message_id']
-          sent_chat_id = sent_message['result']['from']['id']
-
-          bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
           sleep(1.5)
+          bot.api.delete_message(chat_id: message.chat.id, message_id: sent_message_id)
+        end
+      when '/bulk_decode64'
+        hashes = arg.split(' ')
+        decoded_messages = hashes.map { |hash| "• #{decode64(hash)}" }.join("\n\n")
+
+        Thread.new do
+          bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
+
+          sent_message = bot.api.send_message(chat_id: message.chat.id, text: decoded_messages.to_s)
+
+          sent_message_id = sent_message['result']['message_id']
+
+          sleep(15)
           bot.api.delete_message(chat_id: message.chat.id, message_id: sent_message_id)
         end
       when '/ping'
@@ -70,7 +83,6 @@ Telegram::Bot::Client.run(token) do |bot|
           file = File.open('logs.txt').read
           sent_message = bot.api.send_message(chat_id: message.chat.id, text: file.to_s)
           sent_message_id = sent_message['result']['message_id']
-          sent_chat_id = sent_message['result']['from']['id']
 
           bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
           sleep(10)

@@ -2,7 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    coderay (1.1.3)
     concurrent-ruby (1.2.2)
+    dotenv (2.8.1)
     dry-core (1.0.0)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
@@ -30,10 +32,14 @@ GEM
     faraday-net_http (3.0.2)
     ice_nine (0.11.2)
     json (2.6.3)
+    method_source (1.0.0)
     multipart-post (2.3.0)
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rainbow (3.1.1)
     regexp_parser (2.7.0)
     rexml (3.2.5)
@@ -63,6 +69,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  dotenv
+  pry
   rubocop
   telegram-bot-ruby (~> 1.0)
 
