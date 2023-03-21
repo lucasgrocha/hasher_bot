@@ -60,6 +60,8 @@ Telegram::Bot::Client.run(token) do |bot|
         hashes = arg.split(' ')
         decoded_messages = hashes.map { |hash| "• #{decode64(hash)}" }.join("\n\n")
 
+        Logger.log("Bulk decoding: #{hashes}")
+
         Thread.new do
           bot.api.delete_message(chat_id: message.chat.id, message_id: message.message_id)
 
