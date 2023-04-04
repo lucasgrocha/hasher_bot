@@ -22,14 +22,14 @@ class Logger
     time = Time.new.strftime('%d/%m/%y %H:%M:%S')
     timed_message = "#{time} -> #{message}\n"
 
-    puts timed_message
+    # puts timed_message
     File.write('logs.txt', timed_message, mode: 'a')
   end
 end
 
-puts 'Bot running'
+Telegram::Bot::Client.run(token, logger: Logger.new($stderr)) do |bot|
+  bot.logger.info('Bot has been started')
 
-Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     logged = available_chat_ids.map(&:to_i).include?(message.chat.id)
     if logged
@@ -80,6 +80,7 @@ Telegram::Bot::Client.run(token) do |bot|
         end
       when '/logs'
         Logger.log('Logging the file')
+        require 'pry'; binding.pry
 
         Thread.new do
           file = File.open('logs.txt').read
